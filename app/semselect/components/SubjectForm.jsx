@@ -71,6 +71,8 @@ const [subjects, setSubjects] = useState({
       const querySnapshot = await getDocs(collection(db, `S${semester}`));
       querySnapshot.forEach((doc) => {
         console.log(doc.data()[branch][subs][module - 1]);
+        const pdfLink = doc.data()[branch][subs][module - 1];
+        setFetchedData(pdfLink);
       });
     } catch (e) {
       console.log(e);
@@ -176,6 +178,13 @@ const [subjects, setSubjects] = useState({
           </button>
         </div>
       </form>
+      {fetchedData && (
+      <div className="mt-4">
+        <embed src={fetchedData} type="application/pdf" className="bg-red-500" width="100%" height="600px" />
+      </div>
+    )}
+
+
     </>
   );
 }
