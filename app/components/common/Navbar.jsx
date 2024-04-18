@@ -9,20 +9,22 @@ const Navbar = () => {
     let [open, setOpen] = useState(false);
     let Links = [
       { name: "Home", link: "/" },
-      { name: "Timeline", link: "section3" },
+      
       { name: "About", link: "section2" },
-      { name: "Patners ", link: "section4" },
+      { name: "What's-New", link: "section3" },
       { name: "Contact-Us", link: "/contact" },
     ];
   return (
     <div className="shadow-md w-full fixed top-0 left-0 z-10">
     <div
-      className={`md:flex items-center justify-between bg-white py-2 md:px-10 px-7`}
+      className={`md:flex items-center justify-between bg-primary text-[#F7DCB9] py-2 md:px-10 px-7`}
     >
+      <Link href="/">
       <div className="font-extrabold md:font-bold md:text-3xl text-xl pt-2 cursor-pointer flex items-center font-[Poppins] text-textColor">
-        SMARTPREP
+        <img src="logo.jpg" className="h-10" alt="" />
         
       </div>
+      </Link>
 
       <div
         onClick={() => setOpen(!open)}

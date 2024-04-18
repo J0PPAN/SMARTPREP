@@ -6,53 +6,54 @@ import { collection, doc, getDocs } from "firebase/firestore";
 function SubjectForm() {
   const [fetchedData, setFetchedData] = useState(null);
 
-const [subjects, setSubjects] = useState({
+  const [subjects, setSubjects] = useState({
     "CSE": {
-        1: ["Mathematics", "Physics", "Chemistry"],
-        2: ["Data Structures", "Algorithms", "Database Management"],
-        3: ["Operating Systems", "Computer Networks", "Software Engineering"],
-        4: ["Web Development", "Mobile App Development", "Artificial Intelligence"],
-        5: ["Machine Learning", "Data Science", "Big Data","IEFT"],
-        6: ["Cloud Computing", "Internet of Things", "Cybersecurity"],
+      1: ["Mathematics", "Physics", "Chemistry"],
+      2: ["Data Structures", "Algorithms", "Database Management"],
+      3: ["Operating Systems", "Computer Networks", "Software Engineering"],
+      4: ["Web Development", "Mobile App Development", "Artificial Intelligence"],
+      5: ["MPMC", "DM", "CN", "MSS","FLAT","SS"],
+      6: ["CGIP", "CD", "IEFT","AAD","PIP"],
     },
     "ME": {
-        1: ["Mechanics", "Thermodynamics", "Material Science"],
-        2: ["Fluid Mechanics", "Heat Transfer", "Machine Design"],
-        3: ["Engineering Drawing", "Manufacturing Processes", "Engineering Mechanics"],
-        4: ["Automobile Engineering", "Power Plant Engineering", "Refrigeration and Air Conditioning"],
-        5: ["Renewable Energy Systems", "Robotics", "Finite Element Analysis"],
-        6: ["CAD/CAM", "Industrial Engineering", "Quality Control"],
+      1: ["Mechanics", "Thermodynamics", "Material Science"],
+      2: ["Fluid Mechanics", "Heat Transfer", "Machine Design"],
+      3: ["Engineering Drawing", "Manufacturing Processes", "Engineering Mechanics"],
+      4: ["Automobile Engineering", "Power Plant Engineering", "Refrigeration and Air Conditioning"],
+      5: ["Renewable Energy Systems", "Robotics", "Finite Element Analysis"],
+      6: ["CAD/CAM", "Industrial Engineering", "Quality Control"],
     },
     "CE": {
-        1: ["Mathematics", "Physics", "Chemistry"],
-        2: ["Structural Analysis", "Geotechnical Engineering", "Fluid Mechanics"],
-        3: ["Concrete Technology", "Transportation Engineering", "Environmental Engineering"],
-        4: ["Surveying", "Construction Management", "Hydraulics"],
-        5: ["Geomatics Engineering", "Water Resources Engineering", "Geotechnical Engineering"],
-        6: ["Structural Design", "Environmental Impact Assessment", "Construction Materials"],
-        },
-        "EEE": {
-        1: ["Mathematics", "Physics", "Chemistry"],
-        2: ["Circuit Theory", "Electromagnetic Theory", "Electrical Machines"],
-        3: ["Power Systems", "Control Systems", "Power Electronics"],
-        4: ["Digital Electronics", "Microprocessors", "Renewable Energy Systems"],
-        5: ["Instrumentation and Measurements", "High Voltage Engineering", "Electric Drives"],
-        6: ["Digital Signal Processing", "Embedded Systems", "Smart Grids"],
-        },
-        "ECE": {
-        1: ["Mathematics", "Physics", "Chemistry"],
-        2: ["Electronic Devices and Circuits", "Network Analysis", "Digital Electronics"],
-        3: ["Analog Communication", "Digital Communication", "Microprocessors and Microcontrollers"],
-        4: ["Signals and Systems", "Control Systems", "VLSI Design"],
-        5: ["Digital Signal Processing", "Wireless Communication", "Embedded Systems"],
-        6: ["Antenna and Wave Propagation", "Optical Communication", "Satellite Communication"],
-        },
-});
+      1: ["Mathematics", "Physics", "Chemistry"],
+      2: ["Structural Analysis", "Geotechnical Engineering", "Fluid Mechanics"],
+      3: ["Concrete Technology", "Transportation Engineering", "Environmental Engineering"],
+      4: ["Surveying", "Construction Management", "Hydraulics"],
+      5: ["Geomatics Engineering", "Water Resources Engineering", "Geotechnical Engineering"],
+      6: ["Structural Design", "Environmental Impact Assessment", "Construction Materials"],
+    },
+    "EEE": {
+      1: ["Mathematics", "Physics", "Chemistry"],
+      2: ["Circuit Theory", "Electromagnetic Theory", "Electrical Machines"],
+      3: ["Power Systems", "Control Systems", "Power Electronics"],
+      4: ["Digital Electronics", "Microprocessors", "Renewable Energy Systems"],
+      5: ["Instrumentation and Measurements", "High Voltage Engineering", "Electric Drives"],
+      6: ["Digital Signal Processing", "Embedded Systems", "Smart Grids"],
+    },
+    "ECE": {
+      1: ["Mathematics", "Physics", "Chemistry"],
+      2: ["Electronic Devices and Circuits", "Network Analysis", "Digital Electronics"],
+      3: ["Analog Communication", "Digital Communication", "Microprocessors and Microcontrollers"],
+      4: ["Signals and Systems", "Control Systems", "VLSI Design"],
+      5: ["Digital Signal Processing", "Wireless Communication", "Embedded Systems"],
+      6: ["Antenna and Wave Propagation", "Optical Communication", "Satellite Communication"],
+    },
+  });
 
   const [semester, setSemester] = useState(1);
   const [branch, setBranch] = useState("CSE");
   const [module, setModule] = useState(1);
   const [subs, setSubs] = useState();
+  const [avail,setAvail] = useState(true)
   const handleSemesterChange = (e) => {
     setSemester(parseInt(e.target.value));
   };
@@ -67,20 +68,31 @@ const [subjects, setSubjects] = useState({
       console.log(branch);
       console.log(subs);
       console.log(module);
-
+      console.log(avail)
+      
       const querySnapshot = await getDocs(collection(db, `S${semester}`));
       querySnapshot.forEach((doc) => {
         console.log(doc.data()[branch][subs][module - 1]);
-        const pdfLink = doc.data()[branch][subs][module - 1];
-        setFetchedData(pdfLink);
-      });
-    } catch (e) {
-      console.log(e);
-    }
+        const pdfLink = doc.data()[branch]?.[subs]?.[module - 1];
+        if(pdfLink===null || pdfLink===undefined){
+        setAvail(false)
+        }
+      setFetchedData(pdfLink);
+      
+      
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  console.log(avail)
   };
 
   return (
     <>
+    {
+      !avail&&<p>No data available</p>
+    }
+    {avail && <div className="w-3/4 flex flex-col justify-normal items-center h-full overflow-auto pt-32">
       <form className="w-1/2" spy={true} onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
@@ -172,18 +184,20 @@ const [subjects, setSubjects] = useState({
         <div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+            className="bg-primary hover:bg-primary/60 hover:text-primary text-white font-semibold py-2 px-4 rounded"
           >
             Next
           </button>
         </div>
       </form>
       {fetchedData && (
-      <div className="mt-4">
-        <embed src={fetchedData} type="application/pdf" className="bg-red-500" width="100%" height="600px" />
-      </div>
-    )}
+        <div className="m-10 w-full">
+          <embed src={fetchedData} type="application/pdf" className="" width="100%" height="600px" />
+        </div>
+      )}
 
+
+    </div>}
 
     </>
   );

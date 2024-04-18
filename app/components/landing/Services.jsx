@@ -23,8 +23,8 @@ const Services = () => {
     // </div>
 
     <div className='h-screen w-full flex justify-evenly items-center'>
-      <Card title="Curated Ai" width="45" desc="kaskfaoisnalfdshaiohfanofs" colorname="red-600" status="live"/>
-      <Card title="Curated Ai" desc="kaskfaoisnalfdshaiohfanofs" status="not live"/>
+      <Card title="AI Assisted" width="45" desc="" colorname="red-600" status="live"/>
+      <Card title="Custom AI" desc="" status="not live"/>
       
     </div>
   )

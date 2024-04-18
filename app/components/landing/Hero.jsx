@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 
 const Hero = () => {
@@ -5,8 +6,13 @@ const Hero = () => {
         <div className='h-screen w-full flex justify-center items-center'>
             <div className='h-full md:w-1/2 p-10 flex flex-col justify-center items-center'>
                 <h1 className='text-3xl md:text-5xl font-bold text-primary'>SMARTPREP</h1>
-                <p className='text-center mt-8 text-xs md:text-lg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, sint facere asperiores labore laboriosam aspernatur magnam harum ducimus accusantium tempore aliquam voluptas nostrum laudantium quisquam ipsam libero impedit doloremque veniam.</p>
-                <button className=' md:w-48 md:h-12 w-1/2 mt-20'>
+                <p className='text-center mt-8 text-xs md:text-lg text-'>We are here to help you avoid those last minute struggles right before an exam, so get direct access from our AI simplified answer PDFs for your preferred subject</p>
+                <button className='md:w-48 md:h-12 w-1/2 mt-20 bg-primary' onClick={() => {
+                    const servicesSection = document.getElementById('services-section');
+                    if (servicesSection) {
+                        servicesSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }}>
                     <span className="span-mother">
                         <span>G</span>
                         <span>e</span>
